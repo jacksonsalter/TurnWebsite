@@ -1,4 +1,9 @@
-import { createServerSupabaseClient } from "../lib/supabase"
+import { createClient } from "@supabase/supabase-js"
+
+// Create client for server-side usage with service role key
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -6,8 +11,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    const supabase = createServerSupabaseClient()
-
     // Get pagination parameters
     const page = Number.parseInt(req.query.page) || 1
     const limit = Number.parseInt(req.query.limit) || 10

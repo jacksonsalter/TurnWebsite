@@ -1,4 +1,9 @@
-import { createServerSupabaseClient } from "../lib/supabase"
+import { createClient } from "@supabase/supabase-js"
+
+// Create client for server-side usage with service role key
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -11,8 +16,6 @@ export default async function handler(req, res) {
     if (!invoiceId || score === undefined) {
       return res.status(400).json({ error: "Missing required fields" })
     }
-
-    const supabase = createServerSupabaseClient()
 
     // First update the invoice status
     await supabase.from("invoices").update({ status: "completed" }).eq("invoice_id", invoiceId)
