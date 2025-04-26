@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard | Turnitin+</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #0296fd, #0077d1);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(2, 150, 253, 0.25);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 14px rgba(2, 150, 253, 0.3);
+    }
+
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #0296fd;
+      color: #0296fd;
+    }
+
+    .btn-outline:hover {
+      background: rgba(2, 150, 253, 0.1);
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li {
+      margin-left: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #0296fd;
+    }
+
+    .main-content {
+      padding: 10rem 0 6rem;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .dashboard-header h1 {
+      font-size: 2.5rem;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .blue-accent {
+      color: #0296fd;
+    }
+
+    .dashboard-tabs {
+      display: flex;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .tab {
+      padding: 1rem 2rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: #d1d5db;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .tab:hover {
+      color: #ffffff;
+    }
+
+    .tab.active {
+      color: #0296fd;
+      border-bottom-color: #0296fd;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .card {
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    th {
+      font-weight: 600;
+      color: #0296fd;
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-pending {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+
+    .status-completed {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .status-cancelled {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .loading-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #0296fd;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .pagination button {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #ffffff;
+      padding: 0.5rem 1rem;
+      margin: 0 0.25rem;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .pagination button:hover {
+      background-color: rgba(2, 150, 253, 0.2);
+    }
+
+    .pagination button.active {
+      background-color: #0296fd;
+    }
+
+    .pagination button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 2rem 0;
+      position: relative;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      text-align: center;
+    }
+
+    .footer-content p {
+      color: #d1d5db;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .dashboard-header h1 {
+        margin-bottom: 1rem;
+      }
+
+      .dashboard-tabs {
+        overflow-x: auto;
+        width: 100%;
+      }
+
+      .tab {
+        padding: 1rem;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">Turnitin+ Admin</div>
+        <ul class="nav-links">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="index.html">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="main-content">
+    <div class="container">
+      <div class="dashboard-header">
+        <h1>Admin <span class="blue-accent">Dashboard</span></h1>
+        <div>
+          <button id="refresh-btn" class="btn btn-outline">Refresh Data</button>
+        </div>
+      </div>
+
+      <div class="dashboard-tabs">
+        <div class="tab active" data-tab="invoices">Invoices</div>
+        <div class="tab" data-tab="check-results">Check Results</div>
+        <div class="tab" data-tab="contact-messages">Contact Messages</div>
+      </div>
+
+      <!-- Invoices Tab -->
+      <div id="invoices-tab" class="tab-content active">
+        <div class="card">
+          <h2>Recent Invoices</h2>
+          <div class="table-container">
+            <table id="invoices-table">
+              <thead>
+                <tr>
+                  <th>Invoice ID</th>
+                  <th>Payment Method</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Created At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="invoices-body">
+                <tr>
+                  <td colspan="6">
+                    <div class="loading-container">
+                      <div class="loading"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="invoices-pagination" class="pagination"></div>
+        </div>
+      </div>
+
+      <!-- Check Results Tab -->
+      <div id="check-results-tab" class="tab-content">
+        <div class="card">
+          <h2>Check Results</h2>
+          <div class="table-container">
+            <table id="results-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Invoice ID</th>
+                  <th>Score</th>
+                  <th>Created At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="results-body">
+                <tr>
+                  <td colspan="5">
+                    <div class="loading-container">
+                      <div class="loading"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="results-pagination" class="pagination"></div>
+        </div>
+      </div>
+
+      <!-- Contact Messages Tab -->
+      <div id="contact-messages-tab" class="tab-content">
+        <div class="card">
+          <h2>Contact Messages</h2>
+          <div class="table-container">
+            <table id="messages-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Subject</th>
+                  <th>Created At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="messages-body">
+                <tr>
+                  <td colspan="6">
+                    <div class="loading-container">
+                      <div class="loading"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="messages-pagination" class="pagination"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2025 Turnitin+. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Initialize Supabase client
+    const supabaseUrl = 'https://your-project-url.supabase.co';
+    const supabaseAnonKey = 'your-anon-key';
+    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+    
+    // Tab switching functionality
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabId = tab.getAttribute('data-tab');
+        
+        // Remove active class from all tabs and contents
+        tabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding content
+        tab.classList.add('active');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+        
+        // Load data for the active tab
+        loadTabData(tabId);
+      });
+    });
+    
+    // Function to format date
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleString();
+    }
+    
+    // Function to create pagination
+    function createPagination(totalPages, currentPage, containerId, callback) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      
+      // Previous button
+      const prevBtn = document.createElement('button');
+      prevBtn.textContent = '←';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.addEventListener('click', () => callback(currentPage - 1));
+      container.appendChild(prevBtn);
+      
+      // Page buttons
+      for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.textContent = i;
+        if (i === currentPage) {
+          pageBtn.classList.add('active');
+        }
+        pageBtn.addEventListener('click', () => callback(i));
+        container.appendChild(pageBtn);
+      }
+      
+      // Next button
+      const nextBtn = document.createElement('button');
+      nextBtn.textContent = '→';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.addEventListener('click', () => callback(currentPage + 1));
+      container.appendChild(nextBtn);
+    }
+    
+    // Load invoices data
+    async function loadInvoices(page = 1) {
+      const limit = 10;
+      const offset = (page - 1) * limit;
+      
+      try {
+        // Get total count
+        const { count } = await supabase
+          .from('invoices')
+          .select('*', { count: 'exact', head: true });
+          
+        // Get paginated data
+        const { data, error } = await supabase
+          .from('invoices')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .range(offset, offset + limit - 1);
+          
+        if (error) throw error;
+        
+        const tbody = document.getElementById('invoices-body');
+        
+        if (data.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align: center;">No invoices found</td>
+            </tr>
+          `;
+          return;
+        }
+        
+        tbody.innerHTML = '';
+        
+        data.forEach(invoice => {
+          const tr = document.createElement('tr');
+          
+          // Status badge class
+          let statusClass = '';
+          switch (invoice.status) {
+            case 'pending':
+              statusClass = 'status-pending';
+              break;
+            case 'completed':
+              statusClass = 'status-completed';
+              break;
+            case 'cancelled':
+              statusClass = 'status-cancelled';
+              break;
+          }
+          
+          tr.innerHTML = `
+            <td>${invoice.invoice_id}</td>
+            <td>${invoice.payment_method}</td>
+            <td>$${invoice.amount}</td>
+            <td><span class="status-badge ${statusClass}">${invoice.status}</span></td>
+            <td>${formatDate(invoice.created_at)}</td>
+            <td>
+              <button class="btn btn-sm btn-outline view-invoice" data-id="${invoice.invoice_id}">View</button>
+            </td>
+          `;
+          
+          tbody.appendChild(tr);
+        });
+        
+        // Create pagination
+        const totalPages = Math.ceil(count / limit);
+        createPagination(totalPages, page, 'invoices-pagination', loadInvoices);
+        
+      } catch (error) {
+        console.error('Error loading invoices:', error);
+        document.getElementById('invoices-body').innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; color: #ef4444;">Error loading invoices. Please try again.</td>
+          </tr>
+        `;
+      }
+    }
+    
+    // Load check results data
+    async function loadCheckResults(page = 1) {
+      const limit = 10;
+      const offset = (page - 1) * limit;
+      
+      try {
+        // Get total count
+        const { count } = await supabase
+          .from('check_results')
+          .select('*', { count: 'exact', head: true });
+          
+        // Get paginated data
+        const { data, error } = await supabase
+          .from('check_results')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .range(offset, offset + limit - 1);
+          
+        if (error) throw error;
+        
+        const tbody = document.getElementById('results-body');
+        
+        if (data.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" style="text-align: center;">No check results found</td>
+            </tr>
+          `;
+          return;
+        }
+        
+        tbody.innerHTML = '';
+        
+        data.forEach(result => {
+          const tr = document.createElement('tr');
+          
+          tr.innerHTML = `
+            <td>${result.id}</td>
+            <td>${result.invoice_id}</td>
+            <td>${result.score}%</td>
+            <td>${formatDate(result.created_at)}</td>
+            <td>
+              <button class="btn btn-sm btn-outline view-result" data-id="${result.id}">View</button>
+            </td>
+          `;
+          
+          tbody.appendChild(tr);
+        });
+        
+        // Create pagination
+        const totalPages = Math.ceil(count / limit);
+        createPagination(totalPages, page, 'results-pagination', loadCheckResults);
+        
+      } catch (error) {
+        console.error('Error loading check results:', error);
+        document.getElementById('results-body').innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; color: #ef4444;">Error loading check results. Please try again.</td>
+          </tr>
+        `;
+      }
+    }
+    
+    // Load contact messages data
+    async function loadContactMessages(page = 1) {
+      const limit = 10;
+      const offset = (page - 1) * limit;
+      
+      try {
+        // Get total count
+        const { count } = await supabase
+          .from('contact_messages')
+          .select('*', { count: 'exact', head: true });
+          
+        // Get paginated data
+        const { data, error } = await supabase
+          .from('contact_messages')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .range(offset, offset + limit - 1);
+          
+        if (error) throw error;
+        
+        const tbody = document.getElementById('messages-body');
+        
+        if (data.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align: center;">No contact messages found</td>
+            </tr>
+          `;
+          return;
+        }
+        
+        tbody.innerHTML = '';
+        
+        data.forEach(message => {
+          const tr = document.createElement('tr');
+          
+          tr.innerHTML = `
+            <td>${message.id}</td>
+            <td>${message.name}</td>
+            <td>${message.email}</td>
+            <td>${message.subject}</td>
+            <td>${formatDate(message.created_at)}</td>
+            <td>
+              <button class="btn btn-sm btn-outline view-message" data-id="${message.id}">View</button>
+            </td>
+          `;
+          
+          tbody.appendChild(tr);
+        });
+        
+        // Create pagination
+        const totalPages = Math.ceil(count / limit);
+        createPagination(totalPages, page, 'messages-pagination', loadContactMessages);
+        
+      } catch (error) {
+        console.error('Error loading contact messages:', error);
+        document.getElementById('messages-body').innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; color: #ef4444;">Error loading contact messages. Please try again.</td>
+          </tr>
+        `;
+      }
+    }
+    
+    // Function to load data based on active tab
+    function loadTabData(tabId) {
+      switch (tabId) {
+        case 'invoices':
+          loadInvoices();
+          break;
+        case 'check-results':
+          loadCheckResults();
+          break;
+        case 'contact-messages':
+          loadContactMessages();
+          break;
+      }
+    }
+    
+    // Refresh button functionality
+    document.getElementById('refresh-btn').addEventListener('click', () => {
+      const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
+      loadTabData(activeTab);
+    });
+    
+    // View invoice details
+    document.addEventListener('click', async (e) => {
+      if (e.target.classList.contains('view-invoice')) {
+        const invoiceId = e.target.getAttribute('data-id');
+        
+        try {
+          const { data, error } = await supabase
+            .from('invoices')
+            .select('*')
+            .eq('invoice_id', invoiceId)
+            .single();
+            
+          if (error) throw error;
+          
+          alert(`Invoice Details:\n\nID: ${data.invoice_id}\nPayment Method: ${data.payment_method}\nAmount: $${data.amount}\nStatus: ${data.status}\nCreated: ${formatDate(data.created_at)}`);
+        } catch (error) {
+          console.error('Error fetching invoice details:', error);
+          alert('Error fetching invoice details. Please try again.');
+        }
+      }
+      
+      if (e.target.classList.contains('view-result')) {
+        const resultId = e.target.getAttribute('data-id');
+        
+        try {
+          const { data, error } = await supabase
+            .from('check_results')
+            .select('*')
+            .eq('id', resultId)
+            .single();
+            
+          if (error) throw error;
+          
+          alert(`Check Result Details:\n\nID: ${data.id}\nInvoice ID: ${data.invoice_id}\nScore: ${data.score}%\nMessage: ${data.message || 'N/A'}\nCreated: ${formatDate(data.created_at)}`);
+        } catch (error) {
+          console.error('Error fetching check result details:', error);
+          alert('Error fetching check result details. Please try again.');
+        }
+      }
+      
+      if (e.target.classList.contains('view-message')) {
+        const messageId = e.target.getAttribute('data-id');
+        
+        try {
+          const { data, error } = await supabase
+            .from('contact_messages')
+            .select('*')
+            .eq('id', messageId)
+            .single();
+            
+          if (error) throw error;
+          
+          alert(`Message Details:\n\nFrom: ${data.name} (${data.email})\nSubject: ${data.subject}\nMessage: ${data.message}\nReceived: ${formatDate(data.created_at)}`);
+        } catch (error) {
+          console.error('Error fetching message details:', error);
+          alert('Error fetching message details. Please try again.');
+        }
+      }
+    });
+    
+    // Load initial data
+    loadInvoices();
+  </script>
+</body>
+</html>
