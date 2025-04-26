@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Get Started | Turnitin+</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #0296fd, #0077d1);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(2, 150, 253, 0.25);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 14px rgba(2, 150, 253, 0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #0296fd;
+      color: #0296fd;
+      margin-right: 1rem;
+    }
+
+    .btn-outline:hover {
+      background: rgba(2, 150, 253, 0.1);
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+
+    .nav-links li {
+      margin-left: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #0296fd;
+    }
+
+    .main-content {
+      padding: 10rem 0 6rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+    }
+
+    .invoice-panel {
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 3rem;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .invoice-panel h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .invoice-panel p {
+      font-size: 1.1rem;
+      color: #d1d5db;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .blue-accent {
+      color: #0296fd;
+    }
+
+    .form-group {
+      margin-bottom: 2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #d1d5db;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #0296fd;
+      box-shadow: 0 0 0 2px rgba(2, 150, 253, 0.3);
+    }
+
+    .payment-options {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .payment-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .payment-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .payment-option label {
+      display: block;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .payment-option input[type="radio"]:checked + label {
+      background-color: rgba(2, 150, 253, 0.2);
+      border-color: #0296fd;
+    }
+
+    .payment-option label:hover {
+      background-color: rgba(2, 150, 253, 0.1);
+    }
+
+    .payment-option-icon {
+      display: block;
+      margin: 0 auto 0.5rem;
+      width: 40px;
+      height: 40px;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    /* Results section styles */
+    .results-panel {
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 3rem;
+      width: 100%;
+      max-width: 600px;
+      margin: 3rem auto 0;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .results-panel h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .score-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2rem 0;
+    }
+
+    .score-circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0296fd, #0077d1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      box-shadow: 0 10px 20px rgba(2, 150, 253, 0.3);
+    }
+
+    .score-circle span {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .results-details {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .results-details p {
+      color: #d1d5db;
+      margin-bottom: 1rem;
+    }
+
+    .success-message {
+      color: #10b981;
+      font-weight: 600;
+    }
+
+    .good-message {
+      color: #3b82f6;
+      font-weight: 600;
+    }
+
+    .warning-message {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+
+    .danger-message {
+      color: #ef4444;
+      font-weight: 600;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 2rem 0;
+      position: relative;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      text-align: center;
+    }
+
+    .footer-content p {
+      color: #d1d5db;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .invoice-panel, .results-panel {
+        padding: 2rem;
+      }
+
+      .invoice-panel h1, .results-panel h2 {
+        font-size: 2rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .invoice-panel, .results-panel {
+        padding: 1.5rem;
+      }
+
+      .invoice-panel h1, .results-panel h2 {
+        font-size: 1.8rem;
+      }
+
+      .payment-options {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+      
+      .score-circle {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .score-circle span {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">Turnitin+</div>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="info.html">Features</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="main-content">
+    <div class="container">
+      <div class="invoice-panel">
+        <h1>Purchase a <span class="blue-accent">Check</span></h1>
+        <p>Choose your payment method below.</p>
+
+        <form id="invoice-form">
+          <div class="form-group">
+            <label>Payment Method</label>
+            <div class="payment-options">
+              <div class="payment-option">
+                <input type="radio" id="crypto" name="payment-method" value="crypto" checked />
+                <label for="crypto">
+                  <svg class="payment-option-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#0296fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                  Cryptocurrency
+                </label>
+              </div>
+              <div class="payment-option">
+                <input type="radio" id="card" name="payment-method" value="card" />
+                <label for="card">
+                  <svg class="payment-option-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#0296fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                  </svg>
+                  Credit Card
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-container">
+            <button type="submit" id="submit-btn" class="btn">Continue</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Results section (initially hidden, shown after check) -->
+      <div id="results-section" class="results-panel" style="display: none;">
+        <h2>Your <span class="blue-accent">Results</span></h2>
+        <div class="score-container">
+          <div class="score-circle">
+            <span id="score-value">0%</span>
+          </div>
+          <p>Originality Score</p>
+        </div>
+        <div class="results-details">
+          <p>Your document has been analyzed. The originality score represents the percentage of unique content.</p>
+          <div id="score-message"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2025 Turnitin+. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Function to generate a unique invoice ID
+    function generateInvoiceId() {
+      const prefix = "INV-";
+      const timestamp = Date.now().toString(36);
+      const randomStr = Math.random().toString(36).substring(2, 8).toUpperCase();
+      return `${prefix}${timestamp}-${randomStr}`;
+    }
+
+    // Function to simulate checking a document and getting a score
+    function simulateCheck() {
+      // Generate a random score between 0 and 100
+      return Math.floor(Math.random() * 101);
+    }
+
+    // Function to display results based on score
+    function displayResults(score) {
+      document.getElementById('score-value').textContent = score + '%';
+      
+      const messageElement = document.getElementById('score-message');
+      let message = '';
+      
+      if (score >= 90) {
+        message = '<p class="success-message">Excellent! Your content appears to be highly original.</p>';
+      } else if (score >= 70) {
+        message = '<p class="good-message">Good job! Your content is mostly original with some common phrases.</p>';
+      } else if (score >= 50) {
+        message = '<p class="warning-message">Your content contains a moderate amount of unoriginal material. Consider revising.</p>';
+      } else {
+        message = '<p class="danger-message">Your content contains significant unoriginal material. Major revision recommended.</p>';
+      }
+      
+      messageElement.innerHTML = message;
+      
+      // Show the results section
+      document.getElementById('results-section').style.display = 'block';
+      
+      // Scroll to results
+      document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
+      
+      return message;
+    }
+
+    document.getElementById('invoice-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submit-btn');
+      const originalBtnText = submitBtn.textContent;
+      
+      // Show loading state
+      submitBtn.innerHTML = 'Processing... <span class="loading"></span>';
+      submitBtn.disabled = true;
+      
+      try {
+        const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+        
+        // Generate a unique invoice ID
+        const invoiceId = generateInvoiceId();
+        
+        // Save invoice to Supabase
+        const { data: invoice, error: invoiceError } = await fetch('/api/create-invoice', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            invoiceId,
+            paymentMethod
+          })
+        }).then(res => res.json());
+        
+        if (invoiceError) {
+          throw new Error(invoiceError.message || 'Failed to create invoice');
+        }
+        
+        // Alert the user
+        alert(`Invoice created! Invoice ID: ${invoiceId}`);
+        
+        // Simulate document check
+        setTimeout(async () => {
+          const score = simulateCheck();
+          const message = displayResults(score);
+          
+          // Save check result to Supabase
+          await fetch('/api/save-check-result', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              invoiceId,
+              score,
+              message
+            })
+          });
+          
+          // Reset button state
+          submitBtn.innerHTML = originalBtnText;
+          submitBtn.disabled = false;
+        }, 1500);
+        
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error: ' + (error.message || 'Something went wrong. Please try again.'));
+        
+        // Reset button state
+        submitBtn.innerHTML = originalBtnText;
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
